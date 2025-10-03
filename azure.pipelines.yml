@@ -38,7 +38,7 @@ steps:
     location: 'East US'
     templateLocation: 'URL of the file'
     csmFileLink: 'https://testing3383.blob.core.windows.net/adf/ArmTemplate_master.json?sp=r&st=2025-01-10T06:46:00Z&se=2025-01-17T14:46:00Z&sv=2022-11-02&sr=b&sig=pTPAdFiTY5y9m0R54yf5LgWyQduE50huG%2BTp7qIL%2Fhw%3D'
-    csmParametersFileLink: 'https://testing3383.blob.core.windows.net/adf/ArmTemplateParameters_master.json?sp=r&st=2025-01-10T06:47:36Z&se=2025-01-18T14:47:36Z&sv=2022-11-02&sr=b&sig=liDAtF%2Bac9vrW5kDQJqHDsKkI%2BOk76IGfptoqUbyMLI%3D'
+    csmParametersFileLink: 'https://testing3383.blob.core.windows.net/adf/ArmTemplateParameters_master.json?sp=r&st=2025-01-10T06:47:36Z&se=2025-01-18T14:47:36Z&sv=2022-11-02&sr=b&sig'
     overrideParameters: >
       -factoryName "prod-poc"
       -AzureDatabricks1_properties_typeProperties_domain "https://adb-3546587264144534.14.azuredatabricks.net"
@@ -54,4 +54,5 @@ steps:
     azureSubscription: 'IT Infra-55'
     ScriptPath: '$(System.DefaultWorkingDirectory)/cicd.ps1'
     ScriptArguments: '-armTemplate "$(System.DefaultWorkingDirectory)/dev-poc/ARMTemplateForFactory.json" -ResourceGroupName abhishekGupta-rg -DataFactoryName prod-poc -predeployment $false -deleteDeployment $true'
+
     azurePowerShellVersion: 'LatestVersion'
