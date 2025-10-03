@@ -1,0 +1,9 @@
+{
+	"name": "dev-poc",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "16074e59-7563-4eb2-96ea-3f65b0afa5bc",
+		"tenantId": "e4e34038-ea1f-4882-b6e8-ccd776459ca0"
+	}
+}
