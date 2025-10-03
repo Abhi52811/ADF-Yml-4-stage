@@ -1,0 +1,57 @@
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)'
+    ArtifactName: 'drop' 
+    publishLocation: 'Container' 
+    
+- task: AzureFileCopy@4
+  inputs:
+    SourcePath: '$(System.DefaultWorkingDirectory)\dev-poc\linkedTemplates\*'
+    azureSubscription: 'IT Infra-55'
+    Destination: 'AzureBlob'
+    storage: 'testing3383'
+    ContainerName: 'adf'
+  name: AzureFileCopy
+
+- task: AzurePowerShell@5
+  displayName: 'Azure PowerShell Script: Predeployment'
+  inputs:
+    azureSubscription: 'IT Infra-55'
+    ScriptPath: '$(System.DefaultWorkingDirectory)/cicd.ps1'
+    ScriptArguments: '-armTemplate "$(System.DefaultWorkingDirectory)/dev-poc/ARMTemplateForFactory.json" -ResourceGroupName abhishekGupta-rg -DataFactoryName prod-poc -predeployment $true -deleteDeployment $false'
+    azurePowerShellVersion: 'LatestVersion'
+
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'IT Infra-55'
+    subscriptionId: '40d1d403-e9ac-4afe-97ee-caad6e58f8fc'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'abhishekGupta-rg'
+    location: 'East US'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://testing3383.blob.core.windows.net/adf/ArmTemplate_master.json?sp=r&st=2025-01-10T06:46:00Z&se=2025-01-17T14:46:00Z&sv=2022-11-02&sr=b&sig=pTPAdFiTY5y9m0R54yf5LgWyQduE50huG%2BTp7qIL%2Fhw%3D'
+    csmParametersFileLink: 'https://testing3383.blob.core.windows.net/adf/ArmTemplateParameters_master.json?sp=r&st=2025-01-10T06:47:36Z&se=2025-01-18T14:47:36Z&sv=2022-11-02&sr=b&sig=liDAtF%2Bac9vrW5kDQJqHDsKkI%2BOk76IGfptoqUbyMLI%3D'
+    overrideParameters: >
+      -factoryName "prod-poc"
+      -AzureDatabricks1_properties_typeProperties_domain "https://adb-3546587264144534.14.azuredatabricks.net"
+      -AzureDatabricks1_properties_typeProperties_workspaceResourceId "/subscriptions/40d1d403-e9ac-4afe-97ee-caad6e58f8fc/resourceGroups/abhishekGupta-rg/providers/Microsoft.Databricks/workspaces/prod-poc"
+      -AzureDatabricks1_properties_typeProperties_existingClusterId "0111-052926-inejgmnt"
+      -containerUri "https://testing3383.blob.core.windows.net/adf"
+      -containerSasToken "$(containerSasToken)"
+    deploymentMode: 'Incremental'
+
+- task: AzurePowerShell@5
+  displayName: 'Azure PowerShell Script: Postdeployment'
+  inputs:
+    azureSubscription: 'IT Infra-55'
+    ScriptPath: '$(System.DefaultWorkingDirectory)/cicd.ps1'
+    ScriptArguments: '-armTemplate "$(System.DefaultWorkingDirectory)/dev-poc/ARMTemplateForFactory.json" -ResourceGroupName abhishekGupta-rg -DataFactoryName prod-poc -predeployment $false -deleteDeployment $true'
+    azurePowerShellVersion: 'LatestVersion'

@@ -1,0 +1,63 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "dev-poc"
+		},
+		"AzureDatabricks1_properties_typeProperties_domain": {
+			"type": "string",
+			"defaultValue": "https://adb-1128868827602636.16.azuredatabricks.net"
+		},
+		"AzureDatabricks1_properties_typeProperties_workspaceResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/40d1d403-e9ac-4afe-97ee-caad6e58f8fc/resourceGroups/abhishekGupta-rg/providers/Microsoft.Databricks/workspaces/dev-poc"
+		},
+		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1224-092908-ofoaatto"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "dev-poc_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureDatabricks1_properties_typeProperties_domain": {
+						"value": "[parameters('AzureDatabricks1_properties_typeProperties_domain')]"
+					},
+					"AzureDatabricks1_properties_typeProperties_workspaceResourceId": {
+						"value": "[parameters('AzureDatabricks1_properties_typeProperties_workspaceResourceId')]"
+					},
+					"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('AzureDatabricks1_properties_typeProperties_existingClusterId')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

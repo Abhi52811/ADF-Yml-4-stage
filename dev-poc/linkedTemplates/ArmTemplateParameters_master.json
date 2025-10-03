@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "dev-poc"
+		},
+		"AzureDatabricks1_properties_typeProperties_domain": {
+			"value": "https://adb-1128868827602636.16.azuredatabricks.net"
+		},
+		"AzureDatabricks1_properties_typeProperties_workspaceResourceId": {
+			"value": "/subscriptions/40d1d403-e9ac-4afe-97ee-caad6e58f8fc/resourceGroups/abhishekGupta-rg/providers/Microsoft.Databricks/workspaces/dev-poc"
+		},
+		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"value": "1224-092908-ofoaatto"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
